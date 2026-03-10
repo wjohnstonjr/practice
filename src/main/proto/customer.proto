@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package com.practice.gRPC;
+
+option cc_generic_services = false;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+message Address {
+  int32 id = 1;
+  string street = 2;
+  string city = 3;
+  string state = 4;
+  string zip = 5;
+}
+
+message Customer {
+	int32 id = 1;
+	string firstName = 2;
+	string lastName = 3;
+	Address address= 4;
+}
+
+service Customer_Interface {
+  rpc getCustomers(google.protobuf.Empty) returns (stream Customer);
+  rpc createAddress(Address) returns (Address);
+  rpc deleteAddress(google.protobuf.Int32Value) returns (google.protobuf.Int32Value);
+  rpc createCustomer(Customer) returns (Customer);
+  rpc deleteCustomer(google.protobuf.Int32Value) returns (google.protobuf.Int32Value);
+}
