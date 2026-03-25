@@ -4,8 +4,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.practice.model.Address;
-import com.practice.model.Customer;
+import com.practice.model.AddressEntity;
+import com.practice.model.CustomerEntity;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,7 +24,7 @@ public class CustomerRSocketController {
 	 * rsc --stream --route=getCustomers  --debug tcp://localhost:7000
 	 */
 	@MessageMapping("getCustomers")
-	public Flux<Customer> getCustomers() {
+	public Flux<CustomerEntity> getCustomers() {
 		return customerDatabaseController.getCustomers();
 	}
 
@@ -32,7 +32,7 @@ public class CustomerRSocketController {
 	 * rsc --request --route=getCustomer --data=1  --debug tcp://localhost:7000
 	 */
 	@MessageMapping("getCustomer")
-	public Mono<Customer> getCustomer(Long id) {
+	public Mono<CustomerEntity> getCustomer(Long id) {
 		return customerDatabaseController.getCustomer(id);
 	}
 	
@@ -41,7 +41,7 @@ public class CustomerRSocketController {
 	 * rsc --request --route=createAddress --data={\"street\":\"123 Main St.\",\"city\":\"Big City\",\"state\":\"New State\",\"zip\":\"123456\"}  --debug tcp://localhost:7000
 	 */
 	@MessageMapping("createAddress")
-	public Mono<Address> createAddress(Address address) {
+	public Mono<AddressEntity> createAddress(AddressEntity address) {
 		return customerDatabaseController.createAddress(address);
 	}
 
@@ -56,7 +56,7 @@ public class CustomerRSocketController {
 	 * rsc --request --route=createCustomer --data={\"firstName\":\"B.J.\",\"lastName\":\"Johnston\",\"addressId\":1}  --debug tcp://localhost:7000
 	 */
 	@MessageMapping("createCustomer")
-	public Mono<Customer> createCustomer(Customer customer) {
+	public Mono<CustomerEntity> createCustomer(CustomerEntity customer) {
 		return customerDatabaseController.createCustomer(customer);
 	}
 
