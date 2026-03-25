@@ -1,5 +1,7 @@
 package com.practice.model;
 
+import org.springframework.data.relational.core.mapping.Table;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +16,8 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Customer {
+@Table(name = "customer")
+public class CustomerEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,12 +26,12 @@ public class Customer {
 	private String firstName;
 	private String lastName;
 	private Long addressId;
-	private transient Address address;
+	private transient AddressEntity address;
 
-	protected Customer() {
+	protected CustomerEntity() {
 	}
 
-	public Customer(String firstName, String lastName) {
+	public CustomerEntity(String firstName, String lastName) {
 		this.id = null;
 		this.firstName = firstName;
 		this.lastName = lastName;

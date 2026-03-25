@@ -8,9 +8,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface CustomerRepository extends R2dbcRepository<Customer, Long> {
+public interface CustomerRepository extends R2dbcRepository<CustomerEntity, Long> {
 
-	Flux<Customer> findByLastName(String lastName);
+	Flux<CustomerEntity> findByLastName(String lastName);
 
 	@Query("""
 			 SELECT c.first_name AS name, a.state

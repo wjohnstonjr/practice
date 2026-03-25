@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.practice.model.Address;
+import com.practice.model.AddressEntity;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,17 +24,17 @@ public class AddressRestController {
 	}
 
 	@GetMapping("/{id}")
-	public Mono<Address> getAddress(@PathVariable Long id) {
+	public Mono<AddressEntity> getAddress(@PathVariable Long id) {
 		return customerDatabaseController.getAddress(id);
 	}
 
 	@GetMapping("")
-	public Flux<Address> getAddresses() {
+	public Flux<AddressEntity> getAddresses() {
 		return customerDatabaseController.getAddresses();
 	}
 	
 	@PutMapping("")
-	public Mono<Address> createAddress(@RequestBody Address address) {
+	public Mono<AddressEntity> createAddress(@RequestBody AddressEntity address) {
 		return customerDatabaseController.createAddress(address);
 	}
 	

@@ -1,5 +1,7 @@
 package com.practice.model;
 
+import org.springframework.data.relational.core.mapping.Table;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,7 +14,8 @@ import lombok.ToString;
 @Data
 @ToString
 @EqualsAndHashCode
-public class Address {
+@Table(name = "address")
+public class AddressEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,10 +26,10 @@ public class Address {
 	private String state;
 	private String zip;
 
-	protected Address() {
+	protected AddressEntity() {
 	}
 
-	public Address(String street, String city, String state, String zip) {
+	public AddressEntity(String street, String city, String state, String zip) {
 		this.street = street;
 		this.city = city;
 		this.state = state;

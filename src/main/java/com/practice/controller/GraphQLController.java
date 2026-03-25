@@ -7,8 +7,8 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
-import com.practice.model.Address;
-import com.practice.model.Customer;
+import com.practice.model.AddressEntity;
+import com.practice.model.CustomerEntity;
 
 import graphql.schema.DataFetchingEnvironment;
 import reactor.core.publisher.Flux;
@@ -21,7 +21,7 @@ public class GraphQLController {
 	private CustomerDatabaseController customerDatabaseController;
 	
     @QueryMapping
-    public Flux<Customer> customer(@Argument Long id, DataFetchingEnvironment env) {
+    public Flux<CustomerEntity> customer(@Argument Long id, DataFetchingEnvironment env) {
     	if ((id != null) && (id != 0L)) {
     		return customerDatabaseController.getCustomer(id).flux();
     	} else {
@@ -30,12 +30,12 @@ public class GraphQLController {
     }
 
     @SchemaMapping
-    public Mono<Address> address(Customer customer) {
+    public Mono<AddressEntity> address(CustomerEntity customer) {
         return customerDatabaseController.getAddress(customer.getAddressId());
     }
     
     @MutationMapping
-	public Mono<Customer> createCustomer(@Argument Customer customer, DataFetchingEnvironment env) {
+	public Mono<CustomerEntity> createCustomer(@Argument CustomerEntity customer, DataFetchingEnvironment env) {
 		return customerDatabaseController.createCustomer(customer);
 	}
     
@@ -45,7 +45,7 @@ public class GraphQLController {
 	}
     
     @MutationMapping
-	public Mono<Address> createAddress(@Argument Address address, DataFetchingEnvironment env) {
+	public Mono<AddressEntity> createAddress(@Argument AddressEntity address, DataFetchingEnvironment env) {
 		return customerDatabaseController.createAddress(address);
 	}
     

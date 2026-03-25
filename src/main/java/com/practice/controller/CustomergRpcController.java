@@ -6,6 +6,8 @@ import org.springframework.grpc.server.service.GrpcService;
 import com.practice.gRPC.CustomerOuterClass.Address;
 import com.practice.gRPC.CustomerOuterClass.Customer;
 import com.practice.gRPC.Customer_InterfaceGrpc.Customer_InterfaceImplBase;
+import com.practice.model.AddressEntity;
+import com.practice.model.CustomerEntity;
 
 import io.grpc.stub.StreamObserver;
 import reactor.core.scheduler.Schedulers;
@@ -15,10 +17,10 @@ public class CustomergRpcController extends Customer_InterfaceImplBase {
 	@Autowired
 	private CustomerDatabaseController customerDatabaseController;
 
-	private Address getAddress(com.practice.model.Customer customer) {
+	private Address getAddress(CustomerEntity customer) {
 		Address address = Address.newBuilder().build();
 		if (customer.getAddressId() != null) {
-			com.practice.model.Address customerAddress = customerDatabaseController.getAddress(customer.getAddressId())
+			AddressEntity customerAddress = customerDatabaseController.getAddress(customer.getAddressId())
 					.block();
 			if (customerAddress != null) {
 				address = Address.newBuilder().setId(customerAddress.getId().intValue())
@@ -45,7 +47,7 @@ public class CustomergRpcController extends Customer_InterfaceImplBase {
 	@Override
 	public void createAddress(com.practice.gRPC.CustomerOuterClass.Address request,
 			io.grpc.stub.StreamObserver<com.practice.gRPC.CustomerOuterClass.Address> responseObserver) {
-		com.practice.model.Address newAddress = new com.practice.model.Address(request.getStreet(),
+		AddressEntity newAddress = new AddressEntity(request.getStreet(),
 				request.getCity(), request.getState(), request.getZip());
 		customerDatabaseController.createAddress(newAddress).publishOn(Schedulers.boundedElastic()).doOnNext(address -> {
 			responseObserver.onNext(
@@ -68,7 +70,7 @@ public class CustomergRpcController extends Customer_InterfaceImplBase {
 	@Override
 	public void createCustomer(com.practice.gRPC.CustomerOuterClass.Customer request,
 			io.grpc.stub.StreamObserver<com.practice.gRPC.CustomerOuterClass.Customer> responseObserver) {
-		com.practice.model.Customer newCustomer = new com.practice.model.Customer(request.getFirstName(),
+		CustomerEntity newCustomer = new CustomerEntity(request.getFirstName(),
 				request.getLastName());
 		newCustomer.setAddressId((long)request.getAddress().getId());
 		customerDatabaseController.createCustomer(newCustomer).publishOn(Schedulers.boundedElastic()).doOnNext(customer -> {

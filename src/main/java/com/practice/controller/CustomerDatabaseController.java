@@ -5,9 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.practice.model.Address;
+import com.practice.model.AddressEntity;
 import com.practice.model.AddressRepository;
-import com.practice.model.Customer;
+import com.practice.model.CustomerEntity;
 import com.practice.model.CustomerRepository;
 import com.practice.model.NameAndState;
 
@@ -25,17 +25,17 @@ public class CustomerDatabaseController {
 	}
 
 	@Transactional
-	public Mono<Customer> getCustomer(@PathVariable Long id) {
+	public Mono<CustomerEntity> getCustomer(@PathVariable Long id) {
 		return customerRepository.findById(id);
 	}
 
 	@Transactional
-	public Flux<Customer> getCustomers() {
+	public Flux<CustomerEntity> getCustomers() {
 		return customerRepository.findAll();
 	}
 	
 	@Transactional
-	public Mono<Customer> createCustomer(@RequestBody Customer customer) {
+	public Mono<CustomerEntity> createCustomer(@RequestBody CustomerEntity customer) {
 		return customerRepository.save(customer);
 	}
 	
@@ -50,17 +50,17 @@ public class CustomerDatabaseController {
 	}
 
 	@Transactional
-	public Flux<Address> getAddresses() {
+	public Flux<AddressEntity> getAddresses() {
 		return addressRepository.findAll();
 	}
 	
 	@Transactional
-	public Mono<Address> getAddress(@PathVariable Long id) {
+	public Mono<AddressEntity> getAddress(@PathVariable Long id) {
 		return addressRepository.findById(id);
 	}
 
 	@Transactional
-	public Mono<Address> createAddress(@RequestBody Address address) {
+	public Mono<AddressEntity> createAddress(@RequestBody AddressEntity address) {
 		return addressRepository.save(address);
 	}
 
