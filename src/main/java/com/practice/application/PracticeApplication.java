@@ -4,6 +4,7 @@ import java.security.Security;
 
 import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
+import org.bouncycastle.jsse.provider.BouncyCastleJsseProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -14,6 +15,7 @@ import lombok.extern.java.Log;
 public class PracticeApplication {
 
 	public static void main(String[] args) {
+		enableFipsMode();
 		SpringApplication.run(PracticeApplication.class, args);
 	}
 	
@@ -21,6 +23,7 @@ public class PracticeApplication {
 	 * The Bouncy Castle provider names
 	 */
 	private static final String BcProviderName = "BCFIPS";
+	private static final String BcTlsProviderName = "BCJSSE";
 	
 	/**
 	 * Flag to ensure we only attempt to enable FIPS mode once
@@ -31,12 +34,18 @@ public class PracticeApplication {
 		boolean result = false;
 		if (!checked) {
 			checked = true;
-			// check if provider was already registered, only need to do it once
+			/* check if provider was already registered, 
+			 * and remove it to ensure it is the first provider in the list
+			 */
 			if (Security.getProvider(BcProviderName) != null) {
 				Security.removeProvider(BcProviderName);
 			}
+			if (Security.getProvider(BcTlsProviderName) != null) {
+				Security.removeProvider(BcTlsProviderName);
+			}
 			System.setProperty("org.bouncycastle.fips.approved_only", "true");
 			Security.insertProviderAt(new BouncyCastleFipsProvider(), 1);
+			Security.insertProviderAt(new BouncyCastleJsseProvider(), 2);
 			result = CryptoServicesRegistrar.isInApprovedOnlyMode();
 			log.info("In FIPS (only) mode: " + result);
 		} else {
@@ -44,18 +53,4 @@ public class PracticeApplication {
 		}
 		return result;
 	}
-/*
-	@Bean
-    public ConnectionFactory connectionFactory() {
-        return new PostgresqlConnectionFactory(
-            PostgresqlConnectionConfiguration.builder()
-                .username("tnp")
-                .password("password")
-                .database("tnp")
-                .host("localhost")
-                .port(5432)
-                .build()
-        );
-    }
-*/
 }

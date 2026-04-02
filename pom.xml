@@ -102,6 +102,12 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bctls-fips</artifactId>
+			<version>2.1.22</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-services</artifactId>
 		</dependency>
