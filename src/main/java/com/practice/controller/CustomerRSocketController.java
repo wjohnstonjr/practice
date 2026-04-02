@@ -2,7 +2,6 @@ package com.practice.controller;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.practice.model.AddressEntity;
 import com.practice.model.CustomerEntity;
@@ -11,7 +10,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Controller
-@RequestMapping("/customers")
 public class CustomerRSocketController {
 
 	private final CustomerDatabaseController customerDatabaseController;
