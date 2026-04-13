@@ -1,5 +1,6 @@
 package com.practice.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ public class CustomerRestController {
 		return customerDatabaseController.getCustomer(id);
 	}
 
-	@GetMapping("")
+	@GetMapping(path="", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public Flux<CustomerEntity> getCustomers() {
 		return customerDatabaseController.getCustomers();
 	}
