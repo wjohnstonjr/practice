@@ -1,4 +1,4 @@
-package com.practice.model;
+package com.practice.data;
 
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.stereotype.Repository;

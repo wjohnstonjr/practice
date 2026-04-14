@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.practice.model.AddressEntity;
+import com.practice.model.Address;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,30 +17,30 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/address")
 public class AddressRestController {
 
-	private final CustomerDatabaseController customerDatabaseController;
+	private final CustomerController customerController;
 
-	public AddressRestController(CustomerDatabaseController customerRepository) {
-		this.customerDatabaseController = customerRepository;
+	public AddressRestController(CustomerController customerController) {
+		this.customerController = customerController;
 	}
 
 	@GetMapping("/{id}")
-	public Mono<AddressEntity> getAddress(@PathVariable Long id) {
-		return customerDatabaseController.getAddress(id);
+	public Mono<Address> getAddress(@PathVariable Long id) {
+		return customerController.getAddress(id);
 	}
 
 	@GetMapping("")
-	public Flux<AddressEntity> getAddresses() {
-		return customerDatabaseController.getAddresses();
+	public Flux<Address> getAddresses() {
+		return customerController.getAddresses();
 	}
 	
 	@PutMapping("")
-	public Mono<AddressEntity> createAddress(@RequestBody AddressEntity address) {
-		return customerDatabaseController.createAddress(address);
+	public Mono<Address> createAddress(@RequestBody Address address) {
+		return customerController.createAddress(address);
 	}
 	
 	@DeleteMapping("/{id}")
 	public Mono<Long> deleteAddress(@PathVariable Long id) {
-		return customerDatabaseController.deleteAddress(id);
+		return customerController.deleteAddress(id);
 	}
 }
 

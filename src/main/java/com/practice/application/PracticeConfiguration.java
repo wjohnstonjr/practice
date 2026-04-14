@@ -15,10 +15,10 @@ import io.r2dbc.spi.ConnectionFactory;
 	"com.practice.controller"
 })
 @EntityScan({
-	"com.practice.model"
+	"com.practice.data"
 })
 @EnableR2dbcRepositories({
-	"com.practice.model"
+	"com.practice.data"
 })
 public class PracticeConfiguration {
     @Bean

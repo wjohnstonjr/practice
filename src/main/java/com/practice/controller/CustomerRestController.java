@@ -9,39 +9,46 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.practice.model.CustomerEntity;
+import com.practice.model.Customer;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 @RestController
 @RequestMapping("/customers")
 public class CustomerRestController {
 
-	private final CustomerDatabaseController customerDatabaseController;
+	private final CustomerController customerController;
 
-	public CustomerRestController(CustomerDatabaseController customerRepository) {
-		this.customerDatabaseController = customerRepository;
+	public CustomerRestController(CustomerController customerController) {
+		this.customerController = customerController;
 	}
 
 	@GetMapping("/{id}")
-	public Mono<CustomerEntity> getCustomer(@PathVariable Long id) {
-		return customerDatabaseController.getCustomer(id);
+	public Mono<Customer> getCustomer(@PathVariable Long id) {
+		return customerController.getCustomer(id).publishOn(Schedulers.boundedElastic()).map(customer -> {
+			customer.setAddress(customerController.getAddress(customer.getAddressId()).block());
+			return customer;
+		});
 	}
 
 	@GetMapping(path="", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public Flux<CustomerEntity> getCustomers() {
-		return customerDatabaseController.getCustomers();
+	public Flux<Customer> getCustomers() {
+		return customerController.getCustomers().publishOn(Schedulers.boundedElastic()).map(customer -> {
+			customer.setAddress(customerController.getAddress(customer.getAddressId()).block());
+			return customer;
+		});
 	}
 	
 	@PutMapping("")
-	public Mono<CustomerEntity> createCustomer(@RequestBody CustomerEntity customer) {
-		return customerDatabaseController.createCustomer(customer);
+	public Mono<Customer> createCustomer(@RequestBody Customer customer) {
+		return customerController.createCustomer(customer);
 	}
 	
 	@DeleteMapping("/{id}")
 	public Mono<Long> deleteCustomer(@PathVariable Long id) {
-		return customerDatabaseController.deleteCustomer(id);
+		return customerController.deleteCustomer(id);
 	}
 }
 

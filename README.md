@@ -10,7 +10,7 @@
     * GraphQL
     * gRPC
 
-## 🛠️ Installation
+## 🛠️ Installation and Building
 ```bash
 git clone https://github.com/wjohnstonjr/practice.git
 cd practice

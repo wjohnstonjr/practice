@@ -20,12 +20,12 @@ import org.springframework.context.annotation.Import;
 import com.google.protobuf.Empty;
 import com.practice.application.PracticeConfiguration;
 import com.practice.controller.AddressRestController;
+import com.practice.controller.CustomerGraphQLController;
 import com.practice.controller.CustomerRSocketController;
 import com.practice.controller.CustomerRestController;
 import com.practice.controller.CustomergRpcController;
-import com.practice.controller.GraphQLController;
-import com.practice.model.AddressEntity;
-import com.practice.model.CustomerEntity;
+import com.practice.model.Address;
+import com.practice.model.Customer;
 
 import io.grpc.stub.StreamObserver;
 
@@ -38,7 +38,7 @@ class PracticeUnitTests {
 	@Autowired
 	private AddressRestController addressRestController;
 	@Autowired
-	private GraphQLController graphQLController;
+	private CustomerGraphQLController customerGraphQLController;
 	@Autowired
 	private CustomergRpcController customergRpcController;
 	@Autowired
@@ -51,14 +51,14 @@ class PracticeUnitTests {
 		 */
 		assertNotNull(customerRestController);
 		assertNotNull(addressRestController);
-		List<CustomerEntity> customers = customerRestController.getCustomers().collectList().block();
-		AddressEntity address = new AddressEntity("123 Main Street", "Big City", "New State", "12345");
-		AddressEntity createdAddress = addressRestController.createAddress(address).block();
+		List<Customer> customers = customerRestController.getCustomers().collectList().block();
+		Address address = new Address("123 Main Street", "Big City", "New State", "12345");
+		Address createdAddress = addressRestController.createAddress(address).block();
 		address.setId(createdAddress.getId());
 		assertEquals(address, createdAddress);
-		CustomerEntity customer = new CustomerEntity("First", "Last");
+		Customer customer = new Customer("First", "Last");
 		customer.setAddressId(createdAddress.getId());
-		CustomerEntity createdCustomer = customerRestController.createCustomer(customer).block();
+		Customer createdCustomer = customerRestController.createCustomer(customer).block();
 		customer.setId(createdCustomer.getId());
 		assertEquals(customer, createdCustomer);
 		assertEquals(customers.size() + 1, customerRestController.getCustomers().collectList().block().size());
@@ -71,20 +71,20 @@ class PracticeUnitTests {
 		/*
 		 * GraphQL testing
 		 */
-		assertNotNull(graphQLController);
-		List<CustomerEntity> customers = graphQLController.customer(null, null).collectList().block();
-		AddressEntity address = new AddressEntity("123 Main Street", "Big City", "New State", "12345");
-		AddressEntity createdAddress = graphQLController.createAddress(address, null).block();
+		assertNotNull(customerGraphQLController);
+		List<Customer> customers = customerGraphQLController.customer(null, null).collectList().block();
+		Address address = new Address("123 Main Street", "Big City", "New State", "12345");
+		Address createdAddress = customerGraphQLController.createAddress(address, null).block();
 		address.setId(createdAddress.getId());
 		assertEquals(address, createdAddress);
-		CustomerEntity customer = new CustomerEntity("First", "Last");
+		Customer customer = new Customer("First", "Last");
 		customer.setAddressId(createdAddress.getId());
-		CustomerEntity createdCustomer = graphQLController.createCustomer(customer, null).block();
+		Customer createdCustomer = customerGraphQLController.createCustomer(customer, null).block();
 		customer.setId(createdCustomer.getId());
 		assertEquals(customer, createdCustomer);
-		assertEquals(customers.size() + 1, graphQLController.customer(null, null).collectList().block().size());
-		assertEquals(1L, graphQLController.deleteCustomer(createdCustomer.getId(), null).block());
-		assertEquals(1L, graphQLController.deleteAddress(createdAddress.getId(), null).block());
+		assertEquals(customers.size() + 1, customerGraphQLController.customer(null, null).collectList().block().size());
+		assertEquals(1L, customerGraphQLController.deleteCustomer(createdCustomer.getId(), null).block());
+		assertEquals(1L, customerGraphQLController.deleteAddress(createdAddress.getId(), null).block());
 	}
 
 	@Test
@@ -93,14 +93,14 @@ class PracticeUnitTests {
 		 * RSocket testing
 		 */
 		assertNotNull(customerRSocketController);
-		List<CustomerEntity> customers = customerRSocketController.getCustomers().collectList().block();
-		AddressEntity address = new AddressEntity("123 Main Street", "Big City", "New State", "12345");
-		AddressEntity createdAddress = customerRSocketController.createAddress(address).block();
+		List<Customer> customers = customerRSocketController.getCustomers().collectList().block();
+		Address address = new Address("123 Main Street", "Big City", "New State", "12345");
+		Address createdAddress = customerRSocketController.createAddress(address).block();
 		address.setId(createdAddress.getId());
 		assertEquals(address, createdAddress);
-		CustomerEntity customer = new CustomerEntity("First", "Last");
+		Customer customer = new Customer("First", "Last");
 		customer.setAddressId(createdAddress.getId());
-		CustomerEntity createdCustomer = customerRSocketController.createCustomer(customer).block();
+		Customer createdCustomer = customerRSocketController.createCustomer(customer).block();
 		customer.setId(createdCustomer.getId());
 		assertEquals(customer, createdCustomer);
 		assertEquals(customers.size() + 1, customerRSocketController.getCustomers().collectList().block().size());
@@ -116,7 +116,7 @@ class PracticeUnitTests {
 		 */
 		assertNotNull(customergRpcController);
 		assertNotNull(customerRestController);
-		List<CustomerEntity> customers = customerRestController.getCustomers().collectList().block();
+		List<Customer> customers = customerRestController.getCustomers().collectList().block();
 		
 		/*
 		 * Create address
