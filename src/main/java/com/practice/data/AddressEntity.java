@@ -1,4 +1,4 @@
-package com.practice.model;
+package com.practice.data;
 
 import org.springframework.data.relational.core.mapping.Table;
 

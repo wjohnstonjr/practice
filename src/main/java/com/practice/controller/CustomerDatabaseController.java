@@ -5,10 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.practice.model.AddressEntity;
-import com.practice.model.AddressRepository;
-import com.practice.model.CustomerEntity;
-import com.practice.model.CustomerRepository;
+import com.practice.data.AddressEntity;
+import com.practice.data.AddressRepository;
+import com.practice.data.CustomerEntity;
+import com.practice.data.CustomerRepository;
 import com.practice.model.NameAndState;
 
 import reactor.core.publisher.Flux;
