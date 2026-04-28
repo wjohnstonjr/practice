@@ -36,6 +36,10 @@ public class CustomerController {
 	}
 	
 	@Transactional
+	public Mono<Customer> updateCustomer(@RequestBody Customer customer) {
+		return customerDatabaseController.updateCustomer(CustomerMapper.INSTANCE.dtoToEntity(customer)).map(entity -> CustomerMapper.INSTANCE.entityToDto(entity));
+	}
+	@Transactional
 	public Mono<Long> deleteCustomer(@PathVariable Long id) {
 		return customerDatabaseController.deleteCustomer(id.longValue());
 	}

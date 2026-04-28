@@ -40,6 +40,11 @@ public class CustomerDatabaseController {
 	}
 	
 	@Transactional
+	public Mono<CustomerEntity> updateCustomer(@RequestBody CustomerEntity customer) {
+		return customerRepository.save(customer);
+	}
+	
+	@Transactional
 	public Mono<Long> deleteCustomer(@PathVariable Long id) {
 		return customerRepository.deleteById(id.longValue());
 	}
