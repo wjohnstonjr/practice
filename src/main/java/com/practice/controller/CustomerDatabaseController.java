@@ -70,6 +70,11 @@ public class CustomerDatabaseController {
 	}
 
 	@Transactional
+	public Mono<AddressEntity> updateAddress(@RequestBody AddressEntity address) {
+		return addressRepository.save(address);
+	}
+
+	@Transactional
 	public Mono<Long> deleteAddress(@RequestBody Long id) {
 		return addressRepository.deleteById(id.longValue());
 	}
