@@ -65,6 +65,11 @@ public class CustomerController {
 	}
 
 	@Transactional
+	public Mono<Address> updateAddress(@RequestBody Address address) {
+		return customerDatabaseController.updateAddress(AddressMapper.INSTANCE.dtoToEntity(address)).map(entity -> AddressMapper.INSTANCE.entityToDto(entity));
+	}
+
+	@Transactional
 	public Mono<Long> deleteAddress(@RequestBody Long id) {
 		return customerDatabaseController.deleteAddress(id.longValue());
 	}
