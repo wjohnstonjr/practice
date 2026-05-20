@@ -56,11 +56,18 @@ class PracticeUnitTests {
 		Address createdAddress = addressRestController.createAddress(address).block();
 		address.setId(createdAddress.getId());
 		assertEquals(address, createdAddress);
+		address.setStreet("321 First Street");
+		Address updatedAddress = addressRestController.updateAddress(address).block();
+		assertEquals(address, updatedAddress);
 		Customer customer = new Customer("First", "Last");
 		customer.setAddressId(createdAddress.getId());
 		Customer createdCustomer = customerRestController.createCustomer(customer).block();
 		customer.setId(createdCustomer.getId());
 		assertEquals(customer, createdCustomer);
+		assertEquals(customers.size() + 1, customerRestController.getCustomers().collectList().block().size());
+		customer.setLastName("Updatedlastname");
+		Customer updatedCustomer = customerRestController.updateCustomer(customer).block();
+		assertEquals(customer, updatedCustomer);
 		assertEquals(customers.size() + 1, customerRestController.getCustomers().collectList().block().size());
 		assertEquals(1L, customerRSocketController.deleteCustomer(createdCustomer.getId()).block());
 		assertEquals(1L, addressRestController.deleteAddress(createdAddress.getId()).block());
