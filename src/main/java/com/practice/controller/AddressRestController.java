@@ -34,12 +34,12 @@ public class AddressRestController {
 		return customerController.getAddresses();
 	}
 	
-	@PutMapping("")
+	@PostMapping("")
 	public Mono<Address> createAddress(@RequestBody Address address) {
 		return customerController.createAddress(address);
 	}
 	
-	@PostMapping("")
+	@PutMapping("")
 	public Mono<Address> updateAddress(@RequestBody Address address) {
 		return customerController.createAddress(address);
 	}

@@ -41,12 +41,12 @@ public class CustomerRestController {
 		});
 	}
 	
-	@PutMapping("")
+	@PostMapping("")
 	public Mono<Customer> createCustomer(@RequestBody Customer customer) {
 		return customerController.createCustomer(customer);
 	}
 	
-	@PostMapping("")
+	@PutMapping("")
 	public Mono<Customer> updateCustomer(@RequestBody Customer customer) {
 		return customerController.updateCustomer(customer);
 	}
