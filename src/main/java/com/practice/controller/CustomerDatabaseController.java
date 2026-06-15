@@ -76,6 +76,8 @@ public class CustomerDatabaseController {
 
 	@Transactional
 	public Mono<Long> deleteAddress(@RequestBody Long id) {
-		return addressRepository.deleteById(id.longValue());
+		return addressRepository.IsInUse(id).flatMap(inUse -> {
+			return inUse ? Mono.just(0L) : addressRepository.deleteById(id.longValue());
+		});
 	}
 }
